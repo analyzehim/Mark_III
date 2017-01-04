@@ -12,6 +12,7 @@ class Telegram:
     def __init__(self):
         self.proxy = checkMode()
         self.TOKEN = getToken()
+        self.VK_TOKEN = getVKToken()
         self.URL = 'https://api.telegram.org/bot'
         if self.proxy:
             self.proxies = getProxies()

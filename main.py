@@ -4,7 +4,7 @@ import random
 sys.path.insert(0, sys.path[0]+'\\proto')
 from bot_proto import *
 from common_proto import *
-
+from vk_proto import *
 '''
 BOT_MODE
 0 - standart
@@ -40,6 +40,9 @@ def run_command(name, from_id, cmd, author_id, date):
     elif cmd in ('Hello', 'hello', 'hi', 'Hi'):   # Say hello
         telebot.send_text(from_id, 'Hello, %s' % name)
 
+    elif cmd == '/vk':
+        vk_resp = vk_ping(telebot.VK_TOKEN)
+        telebot.send_text(from_id, vk_resp)
 
     elif cmd == '/exit':
         telebot.send_text_with_keyboard(from_id, 'Shut down?', [["Yes", "No"]])

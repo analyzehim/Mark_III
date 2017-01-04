@@ -1,6 +1,5 @@
 <config>
     <proxy>http://KL\Raev_E:PASSWORD@proxy.avp.ru/</proxy>
-    <token>210742163:AAEh145D6PV9dMQmrfaE23AVb7v_FKT-DC4</token>
     <interval>0.5</interval>
     <heartbeat_interval>7200</heartbeat_interval>
 </config>
