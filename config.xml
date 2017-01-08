@@ -1,5 +1,5 @@
 <config>
     <proxy>http://KL\Raev_E:PASSWORD@proxy.avp.ru/</proxy>
-    <interval>0.5</interval>
+    <interval>10</interval>
     <heartbeat_interval>7200</heartbeat_interval>
 </config>

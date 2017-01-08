@@ -23,3 +23,10 @@ def get_bounds(date):
     right = left + 86400
     return (left, right)
 
+def log_event(text):
+    f = open('log.txt', 'a')
+    event = '%s >> %s' % (time.ctime(), text)
+    print event + '\n'
+    f.write(event+'\n')
+    f.close()
+    return

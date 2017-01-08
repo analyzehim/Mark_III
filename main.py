@@ -5,6 +5,7 @@ sys.path.insert(0, sys.path[0]+'\\proto')
 from bot_proto import *
 from common_proto import *
 from vk_proto import *
+from sqlite_proto import *
 '''
 BOT_MODE
 0 - standart
@@ -15,6 +16,14 @@ BOT_MODE
 
 BOT_MODE = 0
 EXIT_MODE = False
+
+def check_vk():
+    mes_list = vk_getmeslist(telebot.VK_TOKEN, 5)
+    checked_mes_list = vk_checklist(mes_list)
+    for mes in checked_mes_list:
+        telebot.send_text(ADMIN_ID, "{0} : {1}".format(mes.author, mes.body) )
+    return 1
+
 
 
 def check_updates():
@@ -58,9 +67,11 @@ def run_command(name, from_id, cmd, author_id, date):
 
 if __name__ == "__main__":
     telebot = Telegram()
+    db_init(vk_getfriendlist(telebot.VK_TOKEN, 9041600))
     telebot.send_text(ADMIN_ID, "Run on {0}".format(telebot.host))
     while True:
         try:
+            check_vk()
 
             if check_updates() != 1:
                 time.sleep(telebot.Interval)

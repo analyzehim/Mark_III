@@ -4,7 +4,7 @@ import time
 import socket
 
 from bot_const import *
-
+from common_proto import *
 # requests.packages.urllib3.disable_warnings()  # Подавление InsecureRequestWarning, с которым я пока ещё не разобрался
 
 
@@ -105,10 +105,4 @@ class Telegram:
                                     proxies=self.proxies)  # HTTP request with proxy
 
 
-def log_event(text):
-    f = open('log.txt', 'a')
-    event = '%s >> %s' % (time.ctime(), text)
-    print event + '\n'
-    f.write(event+'\n')
-    f.close()
-    return
+
