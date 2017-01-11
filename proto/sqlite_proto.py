@@ -18,8 +18,10 @@ def sqlite_add(vk_id, name):
 
 
 def check_user(vk_id):
-    cur.execute('''SELECT * FROM Users WHERE vk_id={0}'''.format(vk_id))
-    return cur.fetchone()
+    for row in cur.execute('''SELECT * FROM Users WHERE vk_id={0}'''.format(vk_id)):
+        return row[1]
+    return vk_id
+
 
 def db_init(users_list):
     for user in users_list:
@@ -27,3 +29,5 @@ def db_init(users_list):
             sqlite_add(user.uid, str(user.first_name) + ' ' + str(user.last_name))
         except:
             log_event("DB_INIT ERROR with " + str(user.uid))
+
+

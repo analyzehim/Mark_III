@@ -2,13 +2,18 @@ import requests
 import json
 SIZE = 20
 offset = 0
+from sqlite_proto import check_user
+from bot_const import getProxies
+from common_proto import *
+
+Proxies = getProxies()
 
 class VkMessage:
     def __init__(self, mes_json):
         self.body = mes_json['body'].encode('utf8')
         self.read_state = mes_json["read_state"]
         self.date = mes_json["date"]
-        self.author = mes_json["uid"]
+        self.author = check_user(mes_json["uid"])
 
     def __str__(self):
         return self.body
@@ -32,7 +37,7 @@ class VkUser:
 def vk_getuserslist(VK_TOKEN, id_list):
     r = requests.get('https://api.vk.com/method/users.get?out=18&user_ids=' +
                              str(id_list)[1:-1] + '&fields=bdate' +
-                             '&access_token=' + VK_TOKEN)
+                             '&access_token=' + VK_TOKEN, proxies=Proxies)
     ans = json.loads(r.content)
     users_list = []
     for line in ans["response"]:
@@ -45,7 +50,7 @@ def vk_getfriendlist(VK_TOKEN, user_id):
                      '&user_id={0}'.format(user_id) +
                      '&orders=hints' +
                      '&fields=bdate' +
-                     '&access_token={0}'.format(VK_TOKEN))
+                     '&access_token={0}'.format(VK_TOKEN), proxies=Proxies)
     ans = json.loads(r.content)
     friends_list = []
     for line in ans["response"]:
@@ -58,7 +63,7 @@ def vk_getfriendlist(VK_TOKEN, user_id):
 def vk_ping(VK_TOKEN):
     r = requests.get('https://api.vk.com/method/messages.get?out=18&count=' +
                              str(SIZE) + '&offset=' + str(offset) + '&out=0' +
-                             '&access_token=' + VK_TOKEN)
+                             '&access_token=' + VK_TOKEN, proxies=Proxies)
     ans = json.loads(r.content)
     print ans, type(ans)
     return ans
@@ -67,7 +72,7 @@ def vk_ping(VK_TOKEN):
 def vk_getmeslist(VK_TOKEN, SIZE):
         r = requests.get('https://api.vk.com/method/messages.get?out=18&count=' +
                          str(SIZE) + '&offset=' + str(0) + '&out=0' +
-                         '&access_token=' + VK_TOKEN)
+                         '&access_token=' + VK_TOKEN, proxies=Proxies)
         ans = json.loads(r.content)
         mes_list = []
         for line in ans["response"][1:]:
@@ -75,6 +80,13 @@ def vk_getmeslist(VK_TOKEN, SIZE):
             mes_list.append(mes)
         return mes_list
 
+def vk_get(VK_TOKEN):
+    mes_list = vk_getmeslist(VK_TOKEN, 10)
+    resp = ''
+    for message in mes_list:
+        if not message.read_state:
+            resp += str(human_time(message.date)) + ' ' + str(message.author)+':  '+str(message.body)+'\n'
+    return resp
 
 def vk_checklist(mes_list):
     return mes_list[:2]

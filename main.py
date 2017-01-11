@@ -53,6 +53,10 @@ def run_command(name, from_id, cmd, author_id, date):
         vk_resp = vk_ping(telebot.VK_TOKEN)
         telebot.send_text(from_id, vk_resp)
 
+    elif cmd == '/get_mes':
+        vk_resp = vk_get(telebot.VK_TOKEN)
+        telebot.send_text(from_id, vk_resp)
+
     elif cmd == '/exit':
         telebot.send_text_with_keyboard(from_id, 'Shut down?', [["Yes", "No"]])
         BOT_MODE = 4
@@ -67,11 +71,11 @@ def run_command(name, from_id, cmd, author_id, date):
 
 if __name__ == "__main__":
     telebot = Telegram()
-    db_init(vk_getfriendlist(telebot.VK_TOKEN, 9041600))
+    # db_init(vk_getfriendlist(telebot.VK_TOKEN, 9041600))
     telebot.send_text(ADMIN_ID, "Run on {0}".format(telebot.host))
     while True:
         try:
-            check_vk()
+            #check_vk()
 
             if check_updates() != 1:
                 time.sleep(telebot.Interval)
