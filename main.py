@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import random
-sys.path.insert(0, sys.path[0]+'\\proto')
+sys.path.insert(0, sys.path[0]+'/proto')
 from bot_proto import *
 from common_proto import *
 from vk_proto import *
