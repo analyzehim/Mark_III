@@ -9,7 +9,7 @@ from sqlite_proto import *
 '''
 BOT_MODE
 0 - standart
-
+2 - Chat Wars
 
 4 - exit
 '''
@@ -49,13 +49,27 @@ def run_command(name, from_id, cmd, author_id, date):
     elif cmd in ('Hello', 'hello', 'hi', 'Hi'):   # Say hello
         telebot.send_text(from_id, 'Hello, %s' % name)
 
+    elif cmd == '/chat_wars':   # Chat Wars setup
+        telebot.send_text_with_keyboard(from_id, 'Which castle?', [["white", "black"], ["blue", "red"]])
+        BOT_MODE = 2
+
+    elif BOT_MODE == 2:
+        f = open("/root/bot/git/ChatWars_bot/castle.txt", 'w')
+        f.write(cmd)
+        f.close()
+        telebot.send_text(from_id, 'Attack to {0}'.format(cmd))
+        BOT_MODE = 2
+
     elif cmd == '/vk':
         vk_resp = vk_ping(telebot.VK_TOKEN)
         telebot.send_text(from_id, vk_resp)
 
     elif cmd == '/get_mes':
         vk_resp = vk_get(telebot.VK_TOKEN)
-        telebot.send_text(from_id, vk_resp)
+        if vk_resp == '':
+            telebot.send_text(from_id, 'No message')
+        else:       
+            telebot.send_text(from_id, vk_resp)
 
     elif cmd == '/exit':
         telebot.send_text_with_keyboard(from_id, 'Shut down?', [["Yes", "No"]])
